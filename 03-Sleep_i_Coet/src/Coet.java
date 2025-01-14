@@ -1,40 +1,48 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Random;
+import java.util.Scanner;
 
 public class Coet {
+    private Motor[] motors;
 
-    public static Random rand = new Random();
-    public static Motor[] engines = new Motor[4];
+    public Coet() {
+        motors = new Motor[4];
+        for (int i = 0; i < 4; i++) {
+            motors[i] = new Motor(i);
+        }
+    }
 
-    public static void passaAPotencia(int p) {
-        if (p >= 0 && p <= 10) {
-            System.out.printf("Pasant a potencia %d", p);
-            for (Motor engine : engines) {
-                engine.setPower(p);
-            }
+    public void passaAPotencia(int p) {
+        if (p < 0 || p > 10) {
+            System.out.println("Error: La potència ha de ser entre 0 i 10.");
         } else {
-            System.out.println("Potencia no valida");
+            System.out.println("Passant a potència " + p);
+            for (Motor motor : motors) {
+                motor.setPotencia(p);
+            }
         }
     }
-    
-    public static void main(String[] args) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        for (int i = 0; i < 4; i++ ) {
-            engines[i] = new Motor(rand);
-            engines[i].start();
+
+    public void arranca() {
+        Scanner scanner = new Scanner(System.in);
+        int potenciaObjectiu;
+        
+        while (true) {
+            System.out.print("Introdueix la potència objectiu (0 per aturar): ");
+            potenciaObjectiu = scanner.nextInt();
+
+            if (potenciaObjectiu == 0) {
+                passaAPotencia(0); // Atura tots els motors.
+                break; // Sortim del bucle quan la potència és 0.
+            }
+
+            passaAPotencia(potenciaObjectiu);
         }
 
-        while (true) {
-            try {
-                String strPower = reader.readLine();
-                int objectivePower = Integer.parseInt(strPower);
-                passaAPotencia(objectivePower);
-                if (objectivePower == 0) break;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } 
-            
-        }
+        scanner.close();
     }
+
+    public static void main(String[] args) {
+        Coet coet = new Coet();
+        coet.arranca();
+    }
+
 }
