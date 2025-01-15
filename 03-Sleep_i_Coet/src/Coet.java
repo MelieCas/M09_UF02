@@ -1,12 +1,14 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Coet {
     private Motor[] motors;
+    private Random rand = new Random();
 
     public Coet() {
         motors = new Motor[4];
         for (int i = 0; i < 4; i++) {
-            motors[i] = new Motor(i);
+            motors[i] = new Motor(i, rand);
         }
     }
 
@@ -24,9 +26,14 @@ public class Coet {
     public void arranca() {
         Scanner scanner = new Scanner(System.in);
         int potenciaObjectiu;
+        System.out.print("Introdueix la potència objectiu (0 per aturar): ");
+        potenciaObjectiu = scanner.nextInt();
+        passaAPotencia(potenciaObjectiu);
+        for (Motor motor : motors) {
+            motor.start();
+        }
         
         while (true) {
-            System.out.print("Introdueix la potència objectiu (0 per aturar): ");
             potenciaObjectiu = scanner.nextInt();
 
             if (potenciaObjectiu == 0) {
