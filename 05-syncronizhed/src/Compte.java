@@ -1,12 +1,13 @@
 public class Compte {
     private float saldo;
-    private static Compte compte = new Compte();
+    private static Compte compte = null;
 
     private Compte() {
         this.saldo = 0;
     }
 
     public static Compte getCompte() {
+        if (compte == null) compte = new Compte();
         return compte;
     }
 

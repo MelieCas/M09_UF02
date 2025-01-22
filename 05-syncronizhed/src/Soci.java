@@ -27,10 +27,12 @@ public class Soci extends Thread {
     public void run() {
         for (int i = 1; i <= maxAnys; i++) {
             for (int j = 1; j <= 12; j++) {
-                if (j % 2 == 0) {
-                    compte.setSaldo(compte.getSaldo() + aportacio);
-                } else {
-                    compte.setSaldo(compte.getSaldo() - aportacio);
+                synchronized (compte) {
+                    if (j % 2 == 0) {
+                        compte.setSaldo(compte.getSaldo() + aportacio);
+                    } else {
+                        compte.setSaldo(compte.getSaldo() - aportacio);
+                    }
                 }
                 try {
                     sleep(rand.nextLong(esperaMax));
